@@ -1,0 +1,25 @@
+/* @font-face {
+  font-family: 'x14y24pxHeadUpDaisy';
+  src:url('../fonts/x14y24pxHeadUpDaisy.ttf') format('truetype');      
+      font-weight: normal;
+      font-style: normal;
+} */
+
+body {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  /* font-family: 'x12y20pxScanLine', sans-serif; */
+  /* font-family: 'x14y24pxHeadUpDaisy', sans-serif; */
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 30px;
+}
+
+.content {
+  color: #fff;
+}
+
+img {
+  width: 80%;
+  display: block;
+  margin: 0 auto; 
+}
+
