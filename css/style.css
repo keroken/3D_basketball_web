@@ -56,8 +56,10 @@ body {
 }
 
 .global-nav li:hover {
+  cursor: pointer;
   color: yellow;
   opacity: 1;
+  text-shadow: 0 0 5px #fff;
 }
 
 .global-nav li.active {
@@ -79,9 +81,9 @@ body {
   margin: 0;
 }
 
-#home:hover, #history:hover, #rules:hover, #world:hover, #news:hover, #link:hover {
+/* #home:hover, #history:hover, #rules:hover, #world:hover, #news:hover, #link:hover {
   cursor: pointer;
-}
+} */
 
 .frame {
   position: absolute;
@@ -107,5 +109,6 @@ body {
     height: 2400px;
   }
 }
+
 
 

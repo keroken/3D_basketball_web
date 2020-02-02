@@ -6,6 +6,14 @@ const main = function () {
   let mouseX, mouseY;
   const width  = window.innerWidth;
   const height = window.innerHeight;
+
+
+  // ----------------- sound ----------------------
+  const clickSound = new Audio();
+  clickSound.src = '../sounds/digital_beep_003.mp3';
+  clickSound.volume = 0.10;
+  clickSound.autoplay = false;
+  clickSound.preload = true;
   
 
   // ----------------- camera settings ----------------------
@@ -144,12 +152,13 @@ const main = function () {
   link_home.classList.add('active');
   const link_history = document.getElementById('history');
   const link_rules = document.getElementById('rules');
-  const link_world = document.getElementById('world');
-  const link_news = document.getElementById('news');
-  const link_link = document.getElementById('link');
-  const gnav = [link_home, link_history, link_rules, link_world, link_news, link_link];
+  const link_players = document.getElementById('players');
+  const link_wheelchair = document.getElementById('wheelchair');
+  const link_links = document.getElementById('links');
+  const gnav = [link_home, link_history, link_rules, link_players, link_wheelchair, link_links];
   
   link_home.addEventListener('click', function() {
+    clickSound.play();
     frame.classList.remove('fade-in');
     for (i = 0; i < gnav.length; i++) {
       gnav[i].classList.remove('active');
@@ -167,6 +176,7 @@ const main = function () {
   });
 
   link_history.addEventListener('click', function() {
+    clickSound.play();
     frame.classList.remove('fade-in');
     for (i = 0; i < gnav.length; i++) {
       gnav[i].classList.remove('active');
@@ -184,6 +194,7 @@ const main = function () {
   });
 
   link_rules.addEventListener('click', function() {
+    clickSound.play();
     frame.classList.remove('fade-in');
     for (i = 0; i < gnav.length; i++) {
       gnav[i].classList.remove('active');
@@ -200,31 +211,55 @@ const main = function () {
     }, 3000);
   });
   
-  link_world.addEventListener('click', function() {
+  link_players.addEventListener('click', function() {
+    clickSound.play();
+    frame.classList.remove('fade-in');
     for (i = 0; i < gnav.length; i++) {
       gnav[i].classList.remove('active');
     }
-    link_world.classList.add('active');
+    link_players.classList.add('active');
     currPosition = 3;
     tweenCamera(camera, positions[currPosition], 3000);
+    title.classList.remove('top');
+    title.classList.add('bottom');
+    setTimeout(function() {
+      frame.src = 'players.html';
+      frame.classList.add('fade-in');
+    }, 3000);
   });
   
-  link_news.addEventListener('click', function() {
+  link_wheelchair.addEventListener('click', function() {
+    clickSound.play();
+    frame.classList.remove('fade-in');
     for (i = 0; i < gnav.length; i++) {
       gnav[i].classList.remove('active');
     }
-    link_news.classList.add('active');
+    link_wheelchair.classList.add('active');
     currPosition = 4;
     tweenCamera(camera, positions[currPosition], 3000);
+    title.classList.remove('top');
+    title.classList.add('bottom');
+    setTimeout(function() {
+      frame.src = 'wheelchair.html';
+      frame.classList.add('fade-in');
+    }, 3000);
   });
 
-  link_link.addEventListener('click', function() {
+  link_links.addEventListener('click', function() {
+    clickSound.play();
+    frame.classList.remove('fade-in');
     for (i = 0; i < gnav.length; i++) {
       gnav[i].classList.remove('active');
     }
-    link_link.classList.add('active');
+    link_links.classList.add('active');
     currPosition = 5;
     tweenCamera(camera, positions[currPosition], 3000);
+    title.classList.remove('top');
+    title.classList.add('bottom');
+    setTimeout(function() {
+      frame.src = 'links.html';
+      frame.classList.add('fade-in');
+    }, 3000);
   });
 
 
