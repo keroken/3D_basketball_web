@@ -5,13 +5,32 @@
       font-style: normal;
 } */
 
+html {
+  overflow-y: scroll;
+  -ms-overflow-style: none;    /* IE, Edge 対応 */
+  scrollbar-width: none;      /* Firefox 対応 */
+}
+
+html::-webkit-scrollbar {  /* Chrome, Safari 対応 */
+  display:none;
+}
+
 body {
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+  /* font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
   /* font-family: 'x14y24pxHeadUpDaisy', sans-serif; */
+  font-family: "Noto Sans JP", sans-serif;
 }
 
 .content {
   color: #fff;
+  overflow-y: scroll;
+  -ms-overflow-style: none;    /* IE, Edge 対応 */
+  scrollbar-width: none;      /* Firefox 対応 */
 }
 
+.content::-webkit-scrollbar {  /* Chrome, Safari 対応 */
+  display:none;
+}
+
+.wf-notosansjapanese { font-family: "Noto Sans JP"; }
 

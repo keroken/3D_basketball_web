@@ -5,11 +5,22 @@
       font-style: normal;
 } */
 
+html {
+  overflow-y: scroll;
+  -ms-overflow-style: none;    /* IE, Edge 対応 */
+  scrollbar-width: none;      /* Firefox 対応 */
+}
+
+html::-webkit-scrollbar {  /* Chrome, Safari 対応 */
+  display:none;
+}
+
 body {
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  /* font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
   /* font-family: 'x12y20pxScanLine', sans-serif; */
   /* font-family: 'x14y24pxHeadUpDaisy', sans-serif; */
-  background-color: rgba(0, 0, 0, 0.6);
+  font-family: "Noto Sans JP", sans-serif;
+  background-color: rgba(0, 0, 0, 0.8);
   padding: 30px;
 }
 
@@ -42,4 +53,12 @@ th {
 a {
   color: hotpink;
 }
+
+iframe {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 50px;
+}
+
+.wf-notosansjapanese { font-family: "Noto Sans JP"; }
 

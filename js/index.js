@@ -10,8 +10,8 @@ const main = function () {
 
   // ----------------- sound ----------------------
   const clickSound = new Audio();
-  clickSound.src = '../sounds/digital_beep_003.mp3';
-  clickSound.volume = 0.10;
+  clickSound.src = 'https://keroken.com/3d_basketball/sounds/digital_beep_003.mp3';
+  clickSound.volume = 0.8;
   clickSound.autoplay = false;
   clickSound.preload = true;
   
@@ -30,8 +30,8 @@ const main = function () {
     [-100, 500, 0],
     [2000, 20000, 0],
     [0, 1000, -3000],
-    [0, 2000, 3000],
-    [-3000, 0, 0]
+    [500, 0, 0],
+    [-1000, -1000, 300]
   ];
   let currPosition = 0;
 
@@ -124,8 +124,9 @@ const main = function () {
     );
 
     TWEEN.update();
+
     controls.update();
-    console.log('x:' + camera.position.x + ', y:' + camera.position.y + ', z:' + camera.position.z);
+    // console.log('x:' + camera.position.x + ', y:' + camera.position.y + ', z:' + camera.position.z);
 
     renderer.render( scene, camera );
   };
