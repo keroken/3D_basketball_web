@@ -18,11 +18,13 @@ html::-webkit-scrollbar {  /* Chrome, Safari 対応 */
 body {
   /* font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
   /* font-family: 'x14y24pxHeadUpDaisy', sans-serif; */
-  font-family: "Noto Sans JP", sans-serif;
+  /* font-family: "Noto Sans JP", sans-serif; */
+  font-family: "游ゴシック体", YuGothic, "游ゴシック Medium", "Yu Gothic Medium", "游ゴシック", "Yu Gothic", "メイリオ", sans-serif;
 }
 
+.wf-notosansjapanese { font-family: "Noto Sans JP"; }
+
 .content {
-  color: #fff;
   overflow-y: scroll;
   -ms-overflow-style: none;    /* IE, Edge 対応 */
   scrollbar-width: none;      /* Firefox 対応 */
@@ -32,5 +34,21 @@ body {
   display:none;
 }
 
-.wf-notosansjapanese { font-family: "Noto Sans JP"; }
+.content p {
+  /* color: #99e6e8; */
+  line-height: 2.5;
+  font-size: 16px;
+  color: #fff;
+
+}
+
+@media screen and (max-width: 750px) {
+  
+  .content p {
+    /* color: #99e6e8; */
+    line-height: 1.5;
+  
+  }
+
+}
 

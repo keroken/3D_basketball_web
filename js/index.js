@@ -11,7 +11,7 @@ const main = function () {
   // ----------------- sound ----------------------
   const clickSound = new Audio();
   clickSound.src = 'https://keroken.com/3d_basketball/sounds/digital_beep_003.mp3';
-  clickSound.volume = 0.8;
+  clickSound.volume = 0.6;
   clickSound.autoplay = false;
   clickSound.preload = true;
   
@@ -22,16 +22,16 @@ const main = function () {
   const near   = 1;
   const far    = 100000;
   const camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
-  camera.position.set( 0, -100, 1500 );
-  camera.lookAt(new THREE.Vector3(0,0,0));
+  camera.position.set( 680, 500, 2500 );
+  camera.lookAt(0,1200,0);
 
-  const positions = [
-    [0, -100, 1500],
-    [-100, 500, 0],
+  const cam_positions = [
+    [680, 500, 2500],
+    [-5100, 850, -4400],
     [2000, 20000, 0],
-    [0, 1000, -3000],
-    [500, 0, 0],
-    [-1000, -1000, 300]
+    [0, 1800, 3000],
+    [500, 500, 1000],
+    [-300, -500, 50]
   ];
   let currPosition = 0;
 
@@ -55,51 +55,163 @@ const main = function () {
 
 
   // ----------------- basketball court ----------------------
-  const plane = new THREE.PlaneGeometry( 15000, 28000, 150, 280 );
+  const plane = new THREE.PlaneGeometry( 16000, 28000, 150, 280 );
   const textureLoader = new THREE.TextureLoader();
-  const texture1 = textureLoader.load( "textures/basketball-court.jpg" );
+  const texture1 = textureLoader.load( "textures/color_floor_01.png" );
   const material1 = new THREE.MeshPhongMaterial( { map: texture1, wireframe: true } );
   const floor = new THREE.Mesh( plane, material1 );
   floor.rotation.x = -Math.PI/2;
-  floor.position.y = -550;
+  floor.position.y = 0;
   // floor.__dirtyRotation = true;
   scene.add( floor );
 
+  
 
+  // ----------------- load wheelchairs ----------------------
+  const NUM = 5;
+  
+  let objmodel = [];
+  let obj = [];
 
-  // ----------------- load 3D models ----------------------
-  let objmodel;
-
+  for (let i=0; i<NUM; i++) {
+    obj[i] = new THREE.Object3D;
+  }
+  
   // instantiate a loader
   const loader = new THREE.OBJLoader();
   // load a resource
   loader.load(
     // resource URL
-    'models/Sport_Wheelchair_01a.obj',
+    'models/wheelchair_player_04d2.obj',
     // called when resource is loaded
     function ( object ) {
       object.traverse(function(child) {
         if (child instanceof THREE.Mesh) {
           child.material.wireframe = true;
-          child.material.color.set(0x0004FF);
+          child.material.color.set(0x6565bf);
         }
       });
-      //object.scale.set(1.5,1.5,1.5);
-      objmodel = object.clone();
-      // obj = new THREE.Object3D();
-      obj.add(objmodel);
+      object.scale.set(1000,1000,1000);
 
-      scene.add( obj );
-    },
-    function ( xhr ) {
-      console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-    },
-    function ( error ) {
-      console.log( 'An error happened' );
+      for (let i=0; i<NUM; i++) {
+        objmodel[i] = object.clone();
+        obj[i].add(objmodel[i]);
+        scene.add(obj[i]);
+
+      }
     }
   );
 
-  const obj = new THREE.Object3D;
+  const wc_position = [
+    [0,0,0],
+    [2000,0,-2000],
+    [-2000,0,-2000],
+    [4000,0,-4000],
+    [-4000,0,-4000]
+  ];
+
+  for (let i=0; i<NUM; i++) {
+    obj[i].position.x = wc_position[i][0];
+    obj[i].position.y = wc_position[i][1];
+    obj[i].position.z = wc_position[i][2];
+  }
+
+
+  // ----------------- load goalpost ----------------------
+  let objmodel_post;
+  let objmodel_post2;
+  let obj_post;
+  let obj_post2;
+
+  obj_post = new THREE.Object3D;
+  obj_post2 = new THREE.Object3D;
+
+  loader.load(
+    // resource URL
+    'models/basketball_goalpost.obj',
+    // called when resource is loaded
+    function ( object ) {
+      object.traverse(function(child) {
+        if (child instanceof THREE.Mesh) {
+          child.material.wireframe = true;
+          child.material.color.set(0x6565bf);
+        }
+      });
+      object.scale.set(1000,1000,1000);
+
+      objmodel_post = object.clone();
+      objmodel_post2 = object.clone();
+      obj_post.add(objmodel_post);
+      obj_post2.add(objmodel_post2);
+      scene.add(obj_post, obj_post2);
+
+    }
+  );
+
+  obj_post.rotation.y = -Math.PI/2;
+  obj_post.position.set(0,0,-15000);
+
+  obj_post2.rotation.y = Math.PI/2;
+  obj_post2.position.set(0,0,15000);
+
+
+  // ----------------- load court ----------------------
+  let objmodel_court;
+  let obj_court;
+
+  obj_court = new THREE.Object3D;
+
+  loader.load(
+    // resource URL
+    'models/court_floor_01.obj',
+    // called when resource is loaded
+    function ( object ) {
+      object.traverse(function(child) {
+        if (child instanceof THREE.Mesh) {
+          child.material.wireframe = true;
+          child.material.color.set(0xffffff);
+        }
+      });
+      object.scale.set(1000,1000,1000);
+
+      objmodel_court = object.clone();
+      obj_court.add(objmodel_court);
+      scene.add(obj_court);
+
+    }
+  );
+
+  obj_court.rotation.y = -Math.PI/2;
+  // obj_court.position.set(0,0,-14000);
+
+  // ----------------- load ball ----------------------
+  let objmodel_ball;
+  let obj_ball;
+
+  obj_ball = new THREE.Object3D;
+
+  loader.load(
+    // resource URL
+    'models/basketball.obj',
+    // called when resource is loaded
+    function ( object ) {
+      object.traverse(function(child) {
+        if (child instanceof THREE.Mesh) {
+          child.material.wireframe = true;
+          child.material.color.set(0x6565bf);
+        }
+      });
+      object.scale.set(1000,1000,1000);
+
+      objmodel_ball = object.clone();
+      obj_ball.add(objmodel_ball);
+      scene.add(obj_ball);
+
+    }
+  );
+
+  // obj_ball.rotation.y = Math.PI/2;
+  obj_ball.position.set(0,0,0);
 
 
 
@@ -109,6 +221,7 @@ const main = function () {
   // controls.autoRotate = true;
   controls.enableDamping = true;
   controls.dampingFactor = 0.2;
+  controls.target.set(0, 800, 0);
   
 
 
@@ -117,16 +230,18 @@ const main = function () {
 
   function animate() {
     requestAnimationFrame( animate );
-    obj.rotation.set(
-      0,
-      obj.rotation.y + .01,
-      0
-    );
 
+    obj[0].rotation.set(0, obj[0].rotation.y + .01, 0);
+    obj[1].rotation.set(0, obj[0].rotation.y + .01, 0);
+    obj[2].rotation.set(0, obj[0].rotation.y + .01, 0);
+    obj[3].rotation.set(0, obj[0].rotation.y + .01, 0);
+    obj[4].rotation.set(0, obj[0].rotation.y + .01, 0);
+    obj_ball.rotation.set(0, obj_ball.rotation.y + .01, 0);
+    
     TWEEN.update();
 
     controls.update();
-    // console.log('x:' + camera.position.x + ', y:' + camera.position.y + ', z:' + camera.position.z);
+    console.log('x:' + camera.position.x + ', y:' + camera.position.y + ', z:' + camera.position.z);
 
     renderer.render( scene, camera );
   };
@@ -139,13 +254,13 @@ const main = function () {
 
 
 
-    // ----------------- iframe ----------------------
+  // ----------------- iframe ----------------------
+  const frame_container = document.getElementById('frame-container');
   const frame = document.getElementById('frame');
   setTimeout(function() {
     frame.src = 'home.html';
-    frame.classList.add('fade-in');
+    frame_container.classList.add('fade-in');
   }, 2000);
-  
 
 
   // ----------------- global menu ----------------------
@@ -160,107 +275,144 @@ const main = function () {
   
   link_home.addEventListener('click', function() {
     clickSound.play();
-    frame.classList.remove('fade-in');
+    camera.up.set(0,2,0);
+    frame_container.classList.remove('fade-in');
+    hamburger_btn.classList.remove('is_active');
+    global_nav.classList.remove('is_active');
+
     for (i = 0; i < gnav.length; i++) {
       gnav[i].classList.remove('active');
     }
     link_home.classList.add('active');
+    controls.target.set(0, 800, 0);
     currPosition = 0;
-    tweenCamera(camera, positions[currPosition], 3000);
+    tweenCamera(camera, cam_positions[currPosition], 3000);
     title.classList.remove('bottom');
     title.classList.add('top');
     
     setTimeout(function() {
       frame.src = 'home.html';
-      frame.classList.add('fade-in');
+      frame_container.classList.add('fade-in');
     }, 3000);
   });
 
   link_history.addEventListener('click', function() {
     clickSound.play();
-    frame.classList.remove('fade-in');
+    frame_container.classList.remove('fade-in');
+    hamburger_btn.classList.remove('is_active');
+    global_nav.classList.remove('is_active');
     for (i = 0; i < gnav.length; i++) {
       gnav[i].classList.remove('active');
     }
     link_history.classList.add('active');
+    controls.target.set(0, 800, 0);
     currPosition = 1;
-    tweenCamera(camera, positions[currPosition], 3000);
+    tweenCamera(camera, cam_positions[currPosition], 3000);
     title.classList.remove('top');
     title.classList.add('bottom');
     
     setTimeout(function() {
       frame.src = 'history.html';
-      frame.classList.add('fade-in');
+      frame_container.classList.add('fade-in');
     }, 3000);
+
   });
 
   link_rules.addEventListener('click', function() {
     clickSound.play();
-    frame.classList.remove('fade-in');
+    frame_container.classList.remove('fade-in');
+    hamburger_btn.classList.remove('is_active');
+    global_nav.classList.remove('is_active');
     for (i = 0; i < gnav.length; i++) {
       gnav[i].classList.remove('active');
     }
     link_rules.classList.add('active');
+    controls.target.set(0, 800, 0);
     currPosition = 2;
-    tweenCamera(camera, positions[currPosition], 3000);
+    tweenCamera(camera, cam_positions[currPosition], 3000);
     title.classList.remove('top');
     title.classList.add('bottom');
 
     setTimeout(function() {
       frame.src = 'rules.html';
-      frame.classList.add('fade-in');
+      frame_container.classList.add('fade-in');
     }, 3000);
   });
   
   link_players.addEventListener('click', function() {
     clickSound.play();
-    frame.classList.remove('fade-in');
+    frame_container.classList.remove('fade-in');
+    hamburger_btn.classList.remove('is_active');
+    global_nav.classList.remove('is_active');
     for (i = 0; i < gnav.length; i++) {
       gnav[i].classList.remove('active');
     }
     link_players.classList.add('active');
+    controls.target.set(0, 800, 0);
     currPosition = 3;
-    tweenCamera(camera, positions[currPosition], 3000);
+    tweenCamera(camera, cam_positions[currPosition], 3000);
     title.classList.remove('top');
     title.classList.add('bottom');
     setTimeout(function() {
       frame.src = 'players.html';
-      frame.classList.add('fade-in');
+      frame_container.classList.add('fade-in');
     }, 3000);
   });
   
   link_wheelchair.addEventListener('click', function() {
     clickSound.play();
-    frame.classList.remove('fade-in');
+    frame_container.classList.remove('fade-in');
+    hamburger_btn.classList.remove('is_active');
+    global_nav.classList.remove('is_active');
     for (i = 0; i < gnav.length; i++) {
       gnav[i].classList.remove('active');
     }
     link_wheelchair.classList.add('active');
+    controls.target.set(0, 400, 0);
     currPosition = 4;
-    tweenCamera(camera, positions[currPosition], 3000);
+    tweenCamera(camera, cam_positions[currPosition], 3000);
     title.classList.remove('top');
     title.classList.add('bottom');
     setTimeout(function() {
       frame.src = 'wheelchair.html';
-      frame.classList.add('fade-in');
+      frame_container.classList.add('fade-in');
     }, 3000);
   });
 
   link_links.addEventListener('click', function() {
     clickSound.play();
-    frame.classList.remove('fade-in');
+    frame_container.classList.remove('fade-in');
+    hamburger_btn.classList.remove('is_active');
+    global_nav.classList.remove('is_active');
     for (i = 0; i < gnav.length; i++) {
       gnav[i].classList.remove('active');
     }
     link_links.classList.add('active');
+    controls.target.set(0, 800, 0);
     currPosition = 5;
-    tweenCamera(camera, positions[currPosition], 3000);
+    tweenCamera(camera, cam_positions[currPosition], 3000);
     title.classList.remove('top');
     title.classList.add('bottom');
     setTimeout(function() {
       frame.src = 'links.html';
-      frame.classList.add('fade-in');
+      frame_container.classList.add('fade-in');
     }, 3000);
+  });
+
+  // ----------------- hamburger menu -----------------------
+  const hamburger_btn = document.getElementById('btn');
+  const global_nav = document.getElementById('global-nav');
+  if (width < 768) {
+    hamburger_btn.classList.remove('is_active');
+  }
+  hamburger_btn.addEventListener('click', function() {
+    if (this.classList.contains('is_active')) {
+      this.classList.remove('is_active');
+      global_nav.classList.remove('is_active');
+    } else {
+      this.classList.add('is_active');
+      global_nav.classList.add('is_active');
+    }
   });
 
 
@@ -268,6 +420,11 @@ const main = function () {
   function onResize() {
     const width = window.innerWidth;
     const height = window.innerHeight;
+
+    if (width < 768) {
+      hamburger_btn.classList.remove('is_active');
+      global_nav.classList.remove('is_active');
+    }
 
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(width, height);
