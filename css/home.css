@@ -39,14 +39,19 @@ body {
   line-height: 2.5;
   font-size: 16px;
   color: #fff;
-
+  text-shadow: 5px 5px 10px #000;
 }
 
 @media screen and (max-width: 750px) {
+
+  .content {
+    padding: 0 20px;
+  }
   
   .content p {
     /* color: #99e6e8; */
-    line-height: 1.5;
+    line-height: 2;
+    font-weight: bold;
   
   }
 

@@ -30,7 +30,7 @@ const main = function () {
     [-5100, 850, -4400],
     [2000, 20000, 0],
     [0, 1800, 3000],
-    [500, 500, 1000],
+    [820, 950, -1000],
     [-300, -500, 50]
   ];
   let currPosition = 0;
@@ -82,7 +82,7 @@ const main = function () {
   // load a resource
   loader.load(
     // resource URL
-    'models/wheelchair_player_04d2.obj',
+    'models/wheelchair_01.obj',
     // called when resource is loaded
     function ( object ) {
       object.traverse(function(child) {
@@ -102,6 +102,37 @@ const main = function () {
     }
   );
 
+  // ---------------- load wheelchair2 --------------------
+  // let objmodel_wheelchair;
+  // let obj_wheelchair;
+
+  // const fbx_loader = new THREE.FBXLoader();
+  // fbx_loader.load( 'models/sport_wheelchair_02b.FBX', function ( object ) {
+
+  //   // mixer = new THREE.AnimationMixer( object );
+
+  //   // var action = mixer.clipAction( object.animations[ 0 ] );
+  //   // action.play();
+
+  //   object.traverse( function ( child ) {
+  //     if ( child.isMesh ) {
+  //       child.castShadow = true;
+  //       child.receiveShadow = true;
+  //     }
+  //   });
+
+  //   object.scale.set(1000,1000,1000);
+
+
+  //   objmodel_wheelchair = object.clone();
+  //   obj_wheelchair.add(objmodel_wheelchair);
+  //   scene.add(obj_wheelchair);
+
+  //   obj_wheelchair.position.set(0,0,0);
+
+  // });
+
+
   const wc_position = [
     [0,0,0],
     [2000,0,-2000],
@@ -116,6 +147,43 @@ const main = function () {
     obj[i].position.z = wc_position[i][2];
   }
 
+  // ----------------- load player ----------------------
+  let objmodel_player = [];
+  let obj_player = [];
+
+  for (let i=0; i<NUM; i++) {
+    obj_player[i] = new THREE.Object3D;
+  }
+  
+  // load a resource
+  loader.load(
+    // resource URL
+    'models/player_01.obj',
+    // called when resource is loaded
+    function ( object ) {
+      object.traverse(function(child) {
+        if (child instanceof THREE.Mesh) {
+          child.material.wireframe = true;
+          child.material.color.set(0x6565bf);
+        }
+      });
+      object.scale.set(1000,1000,1000);
+
+      for (let i=0; i<NUM; i++) {
+        objmodel_player[i] = object.clone();
+        obj_player[i].add(objmodel_player[i]);
+        scene.add(obj_player[i]);
+
+      }
+    }
+  );
+
+  for (let i=0; i<NUM; i++) {
+    obj_player[i].position.x = wc_position[i][0];
+    obj_player[i].position.y = wc_position[i][1];
+    obj_player[i].position.z = wc_position[i][2];
+  }
+  
 
   // ----------------- load goalpost ----------------------
   let objmodel_post;
@@ -197,6 +265,7 @@ const main = function () {
     function ( object ) {
       object.traverse(function(child) {
         if (child instanceof THREE.Mesh) {
+          child.material = new THREE.MeshPhongMaterial;
           child.material.wireframe = true;
           child.material.color.set(0x6565bf);
         }
@@ -226,17 +295,34 @@ const main = function () {
 
 
   // ----------------- animate loop ----------------------
+  let stop_motion = false;
+  let moveDeg = .01;
+
   animate();
 
   function animate() {
     requestAnimationFrame( animate );
 
-    obj[0].rotation.set(0, obj[0].rotation.y + .01, 0);
-    obj[1].rotation.set(0, obj[0].rotation.y + .01, 0);
-    obj[2].rotation.set(0, obj[0].rotation.y + .01, 0);
-    obj[3].rotation.set(0, obj[0].rotation.y + .01, 0);
-    obj[4].rotation.set(0, obj[0].rotation.y + .01, 0);
-    obj_ball.rotation.set(0, obj_ball.rotation.y + .01, 0);
+    if (stop_motion) {
+      moveDeg = 0;
+    } else {
+      moveDeg = .01;
+    }
+
+    obj[0].rotation.set(0, obj[0].rotation.y + moveDeg, 0);
+    obj[1].rotation.set(0, obj[0].rotation.y + moveDeg, 0);
+    obj[2].rotation.set(0, obj[0].rotation.y + moveDeg, 0);
+    obj[3].rotation.set(0, obj[0].rotation.y + moveDeg, 0);
+    obj[4].rotation.set(0, obj[0].rotation.y + moveDeg, 0);
+
+    obj_player[0].rotation.set(0, obj[0].rotation.y + moveDeg, 0);
+    obj_player[1].rotation.set(0, obj[0].rotation.y + moveDeg, 0);
+    obj_player[2].rotation.set(0, obj[0].rotation.y + moveDeg, 0);
+    obj_player[3].rotation.set(0, obj[0].rotation.y + moveDeg, 0);
+    obj_player[4].rotation.set(0, obj[0].rotation.y + moveDeg, 0);
+
+    obj_ball.rotation.set(0, obj[0].rotation.y + moveDeg, 0);
+
     
     TWEEN.update();
 
@@ -262,6 +348,9 @@ const main = function () {
     frame_container.classList.add('fade-in');
   }, 2000);
 
+  // ------------------ close btn ----------------------
+  const close_btn = document.getElementById('close');
+  close_btn.classList.add('no_show');
 
   // ----------------- global menu ----------------------
   const link_home = document.getElementById('home');
@@ -275,10 +364,12 @@ const main = function () {
   
   link_home.addEventListener('click', function() {
     clickSound.play();
-    camera.up.set(0,2,0);
+    stop_motion = false;
+    close_btn.classList.add('no_show');
     frame_container.classList.remove('fade-in');
     hamburger_btn.classList.remove('is_active');
     global_nav.classList.remove('is_active');
+    
 
     for (i = 0; i < gnav.length; i++) {
       gnav[i].classList.remove('active');
@@ -298,6 +389,8 @@ const main = function () {
 
   link_history.addEventListener('click', function() {
     clickSound.play();
+    stop_motion = false;
+    close_btn.classList.remove('no_show');
     frame_container.classList.remove('fade-in');
     hamburger_btn.classList.remove('is_active');
     global_nav.classList.remove('is_active');
@@ -320,6 +413,8 @@ const main = function () {
 
   link_rules.addEventListener('click', function() {
     clickSound.play();
+    stop_motion = false;
+    close_btn.classList.remove('no_show');
     frame_container.classList.remove('fade-in');
     hamburger_btn.classList.remove('is_active');
     global_nav.classList.remove('is_active');
@@ -341,6 +436,8 @@ const main = function () {
   
   link_players.addEventListener('click', function() {
     clickSound.play();
+    stop_motion = false;
+    close_btn.classList.remove('no_show');
     frame_container.classList.remove('fade-in');
     hamburger_btn.classList.remove('is_active');
     global_nav.classList.remove('is_active');
@@ -361,6 +458,11 @@ const main = function () {
   
   link_wheelchair.addEventListener('click', function() {
     clickSound.play();
+    stop_motion = true;
+    obj_player[0].visible = false;
+    obj_ball.visible = false;
+    obj[0].rotation.y = -Math.PI/2;
+    close_btn.classList.remove('no_show');
     frame_container.classList.remove('fade-in');
     hamburger_btn.classList.remove('is_active');
     global_nav.classList.remove('is_active');
@@ -381,6 +483,8 @@ const main = function () {
 
   link_links.addEventListener('click', function() {
     clickSound.play();
+    stop_motion = false;
+    close_btn.classList.remove('no_show');
     frame_container.classList.remove('fade-in');
     hamburger_btn.classList.remove('is_active');
     global_nav.classList.remove('is_active');

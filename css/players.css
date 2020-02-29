@@ -1,0 +1,117 @@
+/* @font-face {
+  font-family: 'x14y24pxHeadUpDaisy';
+  src:url('../fonts/x14y24pxHeadUpDaisy.ttf') format('truetype');      
+      font-weight: normal;
+      font-style: normal;
+} */
+
+html {
+  overflow-y: scroll;
+  -ms-overflow-style: none;    /* IE, Edge 対応 */
+  scrollbar-width: none;      /* Firefox 対応 */
+}
+
+html::-webkit-scrollbar {  /* Chrome, Safari 対応 */
+  display:none;
+}
+
+body {
+  /* font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
+  /* font-family: 'x12y20pxScanLine', sans-serif; */
+  /* font-family: 'x14y24pxHeadUpDaisy', sans-serif; */
+  /* font-family: "Noto Sans JP", sans-serif; */
+  font-family: "游ゴシック体", YuGothic, "游ゴシック Medium", "Yu Gothic Medium", "游ゴシック", "Yu Gothic", "メイリオ", sans-serif;
+  
+}
+
+h1 {font-size: 32px;}
+h2 {font-size: 26px;}
+h3 {font-size: 22px;}
+h4 {font-size: 18px;}
+p {font-size: 14px;}
+
+.content {
+  padding: 30px;
+}
+
+.content_inner {
+  width: 80%;
+  margin: 0 auto;
+  
+}
+
+.content h1, h2, h3, h4 {
+  color: #fff;
+}
+
+.content p {
+  line-height: 2.5;
+  font-size: 16px;
+  color: #fff;
+  text-shadow: 5px 5px 10px #000;
+}
+
+img {
+  width: 100%;
+  display: block;
+  margin: 0 auto 30px;
+}
+
+table {
+  border-collapse: collapse;
+  background-color: #c1e4e6;
+  font-size: 14px;
+  line-height: 2.5;
+}
+
+table, th, td {
+  border: 1px solid white;
+}
+
+th, td {
+  padding: 10px;
+}
+
+th {
+  width: 100px;
+}
+
+a {
+  color: #005582;
+}
+
+iframe {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 50px;
+}
+
+.wf-notosansjapanese { font-family: "Noto Sans JP"; }
+
+.youtube {
+  width: 75vw;
+  height: calc(90vw * 0.5625);
+}
+
+@media screen and (max-width: 768px) {
+  h1 {font-size: 26px;}
+  h2 {font-size: 22px;}
+  h3 {font-size: 18px;}
+  h4 {font-size: 14px;}
+  p {font-size: 14px;}
+  
+  .content {
+    padding: 10px 30px 30px 30px;
+  }
+
+  .content_inner {
+    width: 100%;
+    margin: 0 auto;
+    
+  }
+
+  .content p {
+    line-height: 2;
+  }
+}
+
