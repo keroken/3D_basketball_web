@@ -24,7 +24,15 @@ body {
 
 .wf-notosansjapanese { font-family: "Noto Sans JP"; }
 
+h1 {font-size: 32px;}
+h2 {font-size: 26px;}
+h3 {font-size: 22px;}
+h4 {font-size: 18px;}
+p {font-size: 16px;}
+
 .content {
+  color: #fff;
+  text-shadow: 5px 5px 10px #000;
   overflow-y: scroll;
   -ms-overflow-style: none;    /* IE, Edge 対応 */
   scrollbar-width: none;      /* Firefox 対応 */
@@ -34,11 +42,14 @@ body {
   display:none;
 }
 
+.content h3 {
+  text-align: center;
+}
+
 .content p {
   /* color: #99e6e8; */
   line-height: 2.5;
   font-size: 16px;
-  color: #fff;
   text-shadow: 5px 5px 10px #000;
 }
 

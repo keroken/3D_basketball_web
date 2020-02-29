@@ -39,6 +39,11 @@ body {
   color: #00c2c7;
 }
 
+#title h3 {
+  margin: 0;
+  color: #fff;
+}
+
 #title.top {
   top: 45vh;
 }

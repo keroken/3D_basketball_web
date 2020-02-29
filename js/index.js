@@ -338,7 +338,32 @@ const main = function () {
   const title = document.getElementById('title');
   title.classList.add('top');
 
+  title.addEventListener('click', function() {
+    clickSound.play();
+    stop_motion = false;
+    obj_player[0].visible = true;
+    obj_ball.visible = true;
+    close_btn.classList.add('no_show');
+    frame_container.classList.remove('fade-in');
+    hamburger_btn.classList.remove('is_active');
+    global_nav.classList.remove('is_active');
+    
 
+    for (i = 0; i < gnav.length; i++) {
+      gnav[i].classList.remove('active');
+    }
+    link_home.classList.add('active');
+    controls.target.set(0, 800, 0);
+    currPosition = 0;
+    tweenCamera(camera, cam_positions[currPosition], 3000);
+    title.classList.remove('bottom');
+    title.classList.add('top');
+    
+    setTimeout(function() {
+      frame.src = 'home.html';
+      frame_container.classList.add('fade-in');
+    }, 3000);
+  });
 
   // ----------------- iframe ----------------------
   const frame_container = document.getElementById('frame-container');
@@ -365,6 +390,8 @@ const main = function () {
   link_home.addEventListener('click', function() {
     clickSound.play();
     stop_motion = false;
+    obj_player[0].visible = true;
+    obj_ball.visible = true;
     close_btn.classList.add('no_show');
     frame_container.classList.remove('fade-in');
     hamburger_btn.classList.remove('is_active');
@@ -390,6 +417,8 @@ const main = function () {
   link_history.addEventListener('click', function() {
     clickSound.play();
     stop_motion = false;
+    obj_player[0].visible = true;
+    obj_ball.visible = true;
     close_btn.classList.remove('no_show');
     frame_container.classList.remove('fade-in');
     hamburger_btn.classList.remove('is_active');
@@ -414,6 +443,8 @@ const main = function () {
   link_rules.addEventListener('click', function() {
     clickSound.play();
     stop_motion = false;
+    obj_player[0].visible = true;
+    obj_ball.visible = true;
     close_btn.classList.remove('no_show');
     frame_container.classList.remove('fade-in');
     hamburger_btn.classList.remove('is_active');
@@ -437,6 +468,8 @@ const main = function () {
   link_players.addEventListener('click', function() {
     clickSound.play();
     stop_motion = false;
+    obj_player[0].visible = true;
+    obj_ball.visible = true;
     close_btn.classList.remove('no_show');
     frame_container.classList.remove('fade-in');
     hamburger_btn.classList.remove('is_active');
@@ -484,6 +517,8 @@ const main = function () {
   link_links.addEventListener('click', function() {
     clickSound.play();
     stop_motion = false;
+    obj_player[0].visible = true;
+    obj_ball.visible = true;
     close_btn.classList.remove('no_show');
     frame_container.classList.remove('fade-in');
     hamburger_btn.classList.remove('is_active');
