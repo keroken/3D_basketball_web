@@ -7,14 +7,12 @@ const main = function () {
   const width  = window.innerWidth;
   const height = window.innerHeight;
 
-
   // ----------------- sound ----------------------
   const clickSound = new Audio();
   clickSound.src = 'https://keroken.com/3d_basketball/sounds/digital_beep_003.mp3';
   clickSound.volume = 0.6;
   clickSound.autoplay = false;
   clickSound.preload = true;
-  
 
   // ----------------- camera settings ----------------------
   const fov    = 60;
@@ -30,7 +28,7 @@ const main = function () {
     [-5100, 850, -4400],
     [2000, 20000, 0],
     [0, 1800, 3000],
-    [820, 950, -1000],
+    [-820, 950, -1000],
     [-300, -500, 50]
   ];
   let currPosition = 0;
@@ -102,35 +100,38 @@ const main = function () {
     }
   );
 
-  // ---------------- load wheelchair2 --------------------
-  // let objmodel_wheelchair;
-  // let obj_wheelchair;
 
-  // const fbx_loader = new THREE.FBXLoader();
-  // fbx_loader.load( 'models/sport_wheelchair_02b.FBX', function ( object ) {
+  let objmodel_mtl;
+  let obj_mtl;
 
-  //   // mixer = new THREE.AnimationMixer( object );
+  obj_mtl = new THREE.Object3D;
 
-  //   // var action = mixer.clipAction( object.animations[ 0 ] );
-  //   // action.play();
+  var manager = new THREE.LoadingManager();
 
-  //   object.traverse( function ( child ) {
-  //     if ( child.isMesh ) {
-  //       child.castShadow = true;
-  //       child.receiveShadow = true;
-  //     }
-  //   });
+  new THREE.MTLLoader( manager )
+        .setPath( 'models/' )
+        .load( 'sport_wheelchair_03.mtl', function ( materials ) {
 
-  //   object.scale.set(1000,1000,1000);
+          materials.preload();
 
+          new THREE.OBJLoader( manager )
+            .setMaterials( materials )
+            .setPath( 'models/' )
+            .load( 'sport_wheelchair_03.obj', function ( object ) {
 
-  //   objmodel_wheelchair = object.clone();
-  //   obj_wheelchair.add(objmodel_wheelchair);
-  //   scene.add(obj_wheelchair);
+              object.scale.set(900,900,900);
 
-  //   obj_wheelchair.position.set(0,0,0);
+              objmodel_mtl = object.clone();
+              obj_mtl.add(objmodel_mtl);
+              scene.add(obj_mtl);
 
-  // });
+              obj_mtl.position.set(0,3,17);
+              obj_mtl.rotation.y = -Math.PI/2;
+              obj_mtl.visible = false;
+
+            });
+
+        } );
 
 
   const wc_position = [
@@ -291,7 +292,21 @@ const main = function () {
   controls.enableDamping = true;
   controls.dampingFactor = 0.2;
   controls.target.set(0, 800, 0);
-  
+
+
+  // ------------------- mouse movement ----------------------
+  const mouse = new THREE.Vector2();
+
+  document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+
+  function onDocumentMouseMove( event ) {
+
+    event.preventDefault();
+
+    mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+    
+  }
 
 
   // ----------------- animate loop ----------------------
@@ -323,53 +338,63 @@ const main = function () {
 
     obj_ball.rotation.set(0, obj[0].rotation.y + moveDeg, 0);
 
+    obj_mtl.rotation.set(0, obj[0].rotation.y + moveDeg, 0);
+
+    
     
     TWEEN.update();
 
     controls.update();
     console.log('x:' + camera.position.x + ', y:' + camera.position.y + ', z:' + camera.position.z);
 
+
     renderer.render( scene, camera );
   };
 
-  
+
 
   // ----------------- title ----------------------
   const title = document.getElementById('title');
   title.classList.add('top');
 
-  title.addEventListener('click', function() {
-    clickSound.play();
-    stop_motion = false;
-    obj_player[0].visible = true;
-    obj_ball.visible = true;
-    close_btn.classList.add('no_show');
-    frame_container.classList.remove('fade-in');
-    hamburger_btn.classList.remove('is_active');
-    global_nav.classList.remove('is_active');
+  // title.addEventListener('click', function() {
+  //   clickSound.play();
+  //   stop_motion = false;
+  //   obj_player[0].visible = true;
+  //   obj_ball.visible = true;
+  //   obj[0].visible = true;
+  //   obj_mtl.visible = false;
+  //   close_btn.classList.add('no_show');
+  //   frame_container.classList.remove('left');
+  //   frame_container.classList.remove('right');
+  //   frame_container.classList.add('center');
+  //   frame_container.classList.remove('fade-in');
+  //   hamburger_btn.classList.remove('is_active');
+  //   global_nav.classList.remove('is_active');
+  //   close_comments();
+  //   for (i = 0; i < gnav.length; i++) {
+  //     gnav[i].classList.remove('active');
+  //   }
+  //   link_home.classList.add('active');
+  //   controls.target.set(0, 800, 0);
+  //   currPosition = 0;
+  //   tweenCamera(camera, cam_positions[currPosition], 3000);
+  //   tweenHome()
+  //   title.classList.remove('bottom');
+  //   title.classList.add('top');
     
-
-    for (i = 0; i < gnav.length; i++) {
-      gnav[i].classList.remove('active');
-    }
-    link_home.classList.add('active');
-    controls.target.set(0, 800, 0);
-    currPosition = 0;
-    tweenCamera(camera, cam_positions[currPosition], 3000);
-    title.classList.remove('bottom');
-    title.classList.add('top');
-    
-    setTimeout(function() {
-      frame.src = 'home.html';
-      frame_container.classList.add('fade-in');
-    }, 3000);
-  });
+  //   setTimeout(function() {
+  //     frame.src = 'home.html';
+  //     frame_container.classList.add('fade-in');
+  //   }, 3000);
+  // });
 
   // ----------------- iframe ----------------------
   const frame_container = document.getElementById('frame-container');
   const frame = document.getElementById('frame');
   setTimeout(function() {
     frame.src = 'home.html';
+    frame_container.classList.add('center');
     frame_container.classList.add('fade-in');
   }, 2000);
 
@@ -392,12 +417,17 @@ const main = function () {
     stop_motion = false;
     obj_player[0].visible = true;
     obj_ball.visible = true;
+    obj[0].visible = true;
+    obj_mtl.visible = false;
     close_btn.classList.add('no_show');
+    frame_container.classList.remove('left');
+    frame_container.classList.remove('right');
+    frame_container.classList.add('center');
     frame_container.classList.remove('fade-in');
     hamburger_btn.classList.remove('is_active');
     global_nav.classList.remove('is_active');
-    
-
+    close_comments();
+    close_comments_pl()
     for (i = 0; i < gnav.length; i++) {
       gnav[i].classList.remove('active');
     }
@@ -405,6 +435,7 @@ const main = function () {
     controls.target.set(0, 800, 0);
     currPosition = 0;
     tweenCamera(camera, cam_positions[currPosition], 3000);
+    tweenHome();
     title.classList.remove('bottom');
     title.classList.add('top');
     
@@ -419,10 +450,17 @@ const main = function () {
     stop_motion = false;
     obj_player[0].visible = true;
     obj_ball.visible = true;
+    obj[0].visible = true;
+    obj_mtl.visible = false;
     close_btn.classList.remove('no_show');
+    frame_container.classList.remove('center');
+    frame_container.classList.remove('left');
+    frame_container.classList.add('right');
     frame_container.classList.remove('fade-in');
     hamburger_btn.classList.remove('is_active');
     global_nav.classList.remove('is_active');
+    close_comments();
+    close_comments_pl()
     for (i = 0; i < gnav.length; i++) {
       gnav[i].classList.remove('active');
     }
@@ -430,6 +468,7 @@ const main = function () {
     controls.target.set(0, 800, 0);
     currPosition = 1;
     tweenCamera(camera, cam_positions[currPosition], 3000);
+    tweenHome();
     title.classList.remove('top');
     title.classList.add('bottom');
     
@@ -445,10 +484,17 @@ const main = function () {
     stop_motion = false;
     obj_player[0].visible = true;
     obj_ball.visible = true;
+    obj[0].visible = true;
+    obj_mtl.visible = false;
     close_btn.classList.remove('no_show');
+    frame_container.classList.remove('center');
+    frame_container.classList.remove('right');
+    frame_container.classList.add('left');
     frame_container.classList.remove('fade-in');
     hamburger_btn.classList.remove('is_active');
     global_nav.classList.remove('is_active');
+    close_comments();
+    close_comments_pl()
     for (i = 0; i < gnav.length; i++) {
       gnav[i].classList.remove('active');
     }
@@ -456,6 +502,23 @@ const main = function () {
     controls.target.set(0, 800, 0);
     currPosition = 2;
     tweenCamera(camera, cam_positions[currPosition], 3000);
+
+    tweenObj(obj[0], [0, 0, -10000], 3000);
+    tweenObj(obj_player[0], [0, 0, -10000], 3000);
+    tweenObj(obj_ball, [0, 0, -10000], 3000);
+
+    tweenObj(obj[1], [2000, 0, -8000], 3000);
+    tweenObj(obj_player[1], [2000, 0, -8000], 3000);
+
+    tweenObj(obj[2], [-2000, 0, -8000], 3000);
+    tweenObj(obj_player[2], [-2000, 0, -8000], 3000);
+
+    tweenObj(obj[3], [4000, 0, -6000], 3000);
+    tweenObj(obj_player[3], [4000, 0, -6000], 3000);
+
+    tweenObj(obj[4], [-4000, 0, -6000], 3000);
+    tweenObj(obj_player[4], [-4000, 0, -6000], 3000);
+
     title.classList.remove('top');
     title.classList.add('bottom');
 
@@ -470,10 +533,16 @@ const main = function () {
     stop_motion = false;
     obj_player[0].visible = true;
     obj_ball.visible = true;
+    obj[0].visible = true;
+    obj_mtl.visible = false;
     close_btn.classList.remove('no_show');
+    frame_container.classList.remove('center');
+    frame_container.classList.remove('left');
+    frame_container.classList.add('right');
     frame_container.classList.remove('fade-in');
     hamburger_btn.classList.remove('is_active');
     global_nav.classList.remove('is_active');
+    close_comments();
     for (i = 0; i < gnav.length; i++) {
       gnav[i].classList.remove('active');
     }
@@ -481,11 +550,36 @@ const main = function () {
     controls.target.set(0, 800, 0);
     currPosition = 3;
     tweenCamera(camera, cam_positions[currPosition], 3000);
+    
+    tweenObj(obj[0], [0, 0, -2000], 3000);
+    tweenObj(obj_player[0], [0, 0, -2000], 3000);
+    tweenObj(obj_ball, [0, 0, -2000], 3000);
+
+    tweenObj(obj[1], [2000, 0, -2000], 3000);
+    tweenObj(obj_player[1], [2000, 0, -2000], 3000);
+
+    tweenObj(obj[2], [-2000, 0, -2000], 3000);
+    tweenObj(obj_player[2], [-2000, 0, -2000], 3000);
+
+    tweenObj(obj[3], [4000, 0, -2000], 3000);
+    tweenObj(obj_player[3], [4000, 0, -2000], 3000);
+
+    tweenObj(obj[4], [-4000, 0, -2000], 3000);
+    tweenObj(obj_player[4], [-4000, 0, -2000], 3000);
+
+
     title.classList.remove('top');
     title.classList.add('bottom');
     setTimeout(function() {
-      frame.src = 'players.html';
-      frame_container.classList.add('fade-in');
+      if (window.matchMedia('(max-width: 768px)').matches) {
+        frame.src = 'players.html';
+        frame_container.classList.add('fade-in');
+      } else if (window.matchMedia('(min-width: 768px)').matches) {
+        pl_00.classList.add('fade-in');
+        pl_01.classList.add('fade-in');
+        pl_02.classList.add('fade-in');
+        pl_03.classList.add('fade-in');
+      }
     }, 3000);
   });
   
@@ -494,11 +588,16 @@ const main = function () {
     stop_motion = true;
     obj_player[0].visible = false;
     obj_ball.visible = false;
+    obj_mtl.visible = true;
     obj[0].rotation.y = -Math.PI/2;
     close_btn.classList.remove('no_show');
+    frame_container.classList.remove('center');
+    frame_container.classList.remove('left');
+    frame_container.classList.add('right');
     frame_container.classList.remove('fade-in');
     hamburger_btn.classList.remove('is_active');
     global_nav.classList.remove('is_active');
+    close_comments_pl()
     for (i = 0; i < gnav.length; i++) {
       gnav[i].classList.remove('active');
     }
@@ -506,11 +605,15 @@ const main = function () {
     controls.target.set(0, 400, 0);
     currPosition = 4;
     tweenCamera(camera, cam_positions[currPosition], 3000);
+    tweenHome();
     title.classList.remove('top');
     title.classList.add('bottom');
     setTimeout(function() {
-      frame.src = 'wheelchair.html';
-      frame_container.classList.add('fade-in');
+      // frame.src = 'wheelchair.html';
+      // frame_container.classList.add('fade-in');
+      pc_01.classList.add('fade-in');
+      pc_02.classList.add('fade-in');
+      pc_03.classList.add('fade-in');
     }, 3000);
   });
 
@@ -519,10 +622,17 @@ const main = function () {
     stop_motion = false;
     obj_player[0].visible = true;
     obj_ball.visible = true;
+    obj[0].visible = true;
+    obj_mtl.visible = false;
     close_btn.classList.remove('no_show');
+    frame_container.classList.remove('left');
+    frame_container.classList.remove('right');
+    frame_container.classList.add('center');
     frame_container.classList.remove('fade-in');
     hamburger_btn.classList.remove('is_active');
     global_nav.classList.remove('is_active');
+    close_comments();
+    close_comments_pl()
     for (i = 0; i < gnav.length; i++) {
       gnav[i].classList.remove('active');
     }
@@ -530,12 +640,82 @@ const main = function () {
     controls.target.set(0, 800, 0);
     currPosition = 5;
     tweenCamera(camera, cam_positions[currPosition], 3000);
+    tweenHome();
     title.classList.remove('top');
     title.classList.add('bottom');
     setTimeout(function() {
       frame.src = 'links.html';
       frame_container.classList.add('fade-in');
     }, 3000);
+  });
+
+
+  // ----------------- wheelchair exp -----------------------
+  const pc_01 = document.getElementById('pc_01');
+  const pc_02 = document.getElementById('pc_02');
+  const pc_03 = document.getElementById('pc_03');
+  const pc_01p = document.getElementById('pc_01p');
+  const pc_02p = document.getElementById('pc_02p');
+  const pc_03p = document.getElementById('pc_03p');
+
+  pc_01.addEventListener('click', function() {
+    clickSound.play();
+    tweenCamera(camera, [200, 1100, -1000], 500);
+    pc_01.style.opacity = 1;
+    pc_02.style.opacity = 0.4;
+    pc_03.style.opacity = 0.4;
+  });
+
+  pc_02.addEventListener('click', function() {
+    clickSound.play();
+    tweenCamera(camera, [-280, 320, -1200], 500);
+    pc_02.style.opacity = 1;
+    pc_01.style.opacity = 0.4;
+    pc_03.style.opacity = 0.4;
+  });
+
+  pc_03.addEventListener('click', function() {
+    clickSound.play();
+    tweenCamera(camera, [-1230, 520, 35], 500);
+    pc_03.style.opacity = 1;
+    pc_01.style.opacity = 0.4;
+    pc_02.style.opacity = 0.4;
+  });
+
+  // ----------------- player exp -----------------------
+  const pl_00 = document.getElementById('pl_00');
+  const pl_01 = document.getElementById('pl_01');
+  const pl_02 = document.getElementById('pl_02');
+  const pl_03 = document.getElementById('pl_03');
+
+  pl_01.addEventListener('click', function() {
+    clickSound.play();
+    tweenControls(controls, [-2000, 800, -2000], 500);
+    tweenCamera(camera, [-2000, 800, 1200], 500);
+    // pl_00.style.display = 'none';
+    pl_01.style.opacity = 1;
+    pl_02.style.opacity = 0.4;
+    pl_03.style.opacity = 0.4;
+  });
+
+  pl_02.addEventListener('click', function() {
+    clickSound.play();
+    tweenControls(controls, [0, 800, -2000], 500);
+    tweenCamera(camera, [0, 800, 1200], 500);
+    // pl_00.style.display = 'none';
+    pl_02.style.opacity = 1;
+    pl_01.style.opacity = 0.4;
+    pl_03.style.opacity = 0.4;
+  });
+
+  pl_03.addEventListener('click', function() {
+    clickSound.play();
+    tweenControls(controls, [2000, 800, -2000], 500);
+    tweenCamera(camera, [2000, 800, 1200], 500);
+    // pl_00.style.display = 'none';
+    pl_03.style.opacity = 1;
+    pl_01.style.opacity = 0.4;
+    pl_02.style.opacity = 0.4;
   });
 
   // ----------------- hamburger menu -----------------------
@@ -585,6 +765,57 @@ const main = function () {
     }, duration)
     .easing(TWEEN.Easing.Quadratic.InOut)
     .start();
+  }
+
+  function tweenObj(obj, position, duration) {
+    new TWEEN.Tween(obj.position).to({
+      x: position[0],
+      y: position[1],
+      z: position[2],
+    }, duration)
+    .easing(TWEEN.Easing.Quadratic.InOut)
+    .start();
+  }
+
+  function tweenControls(controls, target, duration) {
+    new TWEEN.Tween(controls.target).to({
+        x: target[0],
+        y: target[1],
+        z: target[2],
+    }, duration)
+    .easing(TWEEN.Easing.Quadratic.InOut)
+    .start();
+  }
+
+  function tweenHome() {
+    tweenObj(obj[0], [0, 0, 0], 3000);
+    tweenObj(obj_player[0], [0, 0, 0], 3000);
+    tweenObj(obj_ball, [0, 0, 0], 3000);
+
+    tweenObj(obj[1], [2000, 0, -2000], 3000);
+    tweenObj(obj_player[1], [2000, 0, -2000], 3000);
+
+    tweenObj(obj[2], [-2000, 0, -2000], 3000);
+    tweenObj(obj_player[2], [-2000, 0, -2000], 3000);
+
+    tweenObj(obj[3], [4000, 0, -4000], 3000);
+    tweenObj(obj_player[3], [4000, 0, -4000], 3000);
+
+    tweenObj(obj[4], [-4000, 0, -4000], 3000);
+    tweenObj(obj_player[4], [-4000, 0, -4000], 3000);
+  }
+
+  function close_comments() {
+    pc_01.classList.remove('fade-in');
+    pc_02.classList.remove('fade-in');
+    pc_03.classList.remove('fade-in');
+  }
+
+  function close_comments_pl() {
+    pl_00.classList.remove('fade-in');
+    pl_01.classList.remove('fade-in');
+    pl_02.classList.remove('fade-in');
+    pl_03.classList.remove('fade-in');
   }
 
   // マウスイベント

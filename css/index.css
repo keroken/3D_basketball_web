@@ -31,8 +31,8 @@ body {
 
 #title {
   position: absolute;
-  width: 70%;
-  left: calc(50% - 35%);
+  width: 100%;
+  left: calc(50% - 50%);
   text-align: center;
   z-index: 100;
   display: block;
@@ -49,7 +49,7 @@ body {
 }
 
 #title.bottom {
-  bottom: 30px;
+  bottom: 0;
 }
 
 .global-nav {
@@ -102,8 +102,6 @@ body {
   display: none;
 }
 
-
-/* 線を引く */
 #btn:focus { outline:0; }
 
 #btn:hover {
@@ -112,7 +110,6 @@ body {
 }
 
 
-/* 中央の線 */
 #btn span{
   background: #99e6e8;
   width: 40px;
@@ -122,7 +119,6 @@ body {
   top: 18px;
 }
 
-/* 上下の線 */
 #btn span:before,
 #btn span:after{
   background: #99e6e8;
@@ -135,7 +131,7 @@ body {
   top: 0;
 }
 
-/* 上下の線の位置調整 */
+
 #btn span:before{
   transform: translate(0,13px);
   transition:0.3s all;
@@ -146,7 +142,6 @@ body {
 }
 
 
-/* 傾けた後の動き */
 #btn.is_active span {
   background: rgba(0,0,0,0);
 }
@@ -171,20 +166,33 @@ body {
   margin: 0;
 }
 
-/* #home:hover, #history:hover, #rules:hover, #world:hover, #news:hover, #link:hover {
-  cursor: pointer;
-} */
 
 .frame-container {
   display: none;
   position: absolute;
   z-index: 100;
   top: 10%;
-  left: calc(50% - (90vw/2));
-  width: 90vw;
   border: none;
   opacity: 0;
   transition: all 0.6s;
+  
+}
+
+.frame-container.center {
+  width: 90vw;
+  left: calc(50% - (90vw/2));
+}
+
+.frame-container.left {
+  width: 50vw;
+  left: calc(50% - (90vw/2));
+  transform: perspective(900px) rotateY(15deg);
+}
+
+.frame-container.right {
+  width: 50vw;
+  right: calc(50% - (90vw/2));
+  transform: perspective(900px) rotateY(-15deg);
 }
 
 .frame-container.fade-in {
@@ -213,12 +221,82 @@ body {
   display: none;
 }
 
+.parts_comment {
+  position: absolute;
+  z-index: 100;
+  padding: 20px;
+  width: 15vw;
+  background-color: rgba(0,0,0,0.6);
+  display: none;
+  opacity: 0;
+  transition: all 0.6s;
+  cursor: pointer;
+}
+
+.parts_comment h2, h3 {
+  color: #c4feff;
+  margin: 0;
+  font-size: 18px;
+}
+
+.parts_comment h2 {
+  text-align: center;
+}
+
+.parts_comment p {
+  color: #fff;
+  font-size: 14px;
+}
+
+.parts_comment.fade-in {
+  opacity: 1;
+  display: block;
+}
+
+.parts_comment.pc_01 {
+  top: 100px;
+  left: 15vw;
+}
+
+.parts_comment.pc_02 {
+  top: 500px;
+  left: 15vw;
+}
+
+.parts_comment.pc_03 {
+  top: 300px;
+  right: 15vw;
+}
+
+.parts_comment.pl_00 {
+  width: 80vw;
+  bottom: 150px;
+  left: 10vw;
+  cursor: default;
+}
+
+.parts_comment.pl_01 {
+  top: 100px;
+  left: 12vw;
+}
+
+.parts_comment.pl_02 {
+  top: 100px;
+  left: 42vw;
+}
+
+.parts_comment.pl_03 {
+  top: 100px;
+  left: 72vw;
+}
+
+
 @media screen and (min-width: 1300px) {
 
-  .frame-container {
-    width: 1200px;
-    left: calc(50% - 600px);
-  }
+  /* .frame-container {
+    width: 1000px;
+    right: calc(50% - 500px);
+  } */
 
 }
 
@@ -277,9 +355,27 @@ body {
     display: none;
     position: absolute;
     z-index: 100;
-    /* top: 20%; */
+    /* top: 30vh; */
     left: calc(50% - (100vw/2));
     width: 100vw;
+    
+  }
+
+  .frame-container.center {
+    width: 100vw;
+    left: calc(50% - (100vw/2));
+  }
+
+  .frame-container.left {
+    width: 100vw;
+    left: calc(50% - (100vw/2));
+    transform: perspective(100vw) rotateY(0deg);
+  }
+  
+  .frame-container.right {
+    width: 100vw;
+    right: calc(50% - (100vw/2));
+    transform: perspective(100vw) rotateY(0deg);
   }
   
   .frame {
@@ -288,13 +384,45 @@ body {
     height: 90vh;
   }
 
-  /* .frame-container {
-    top: 15%;
+  .parts_comment {
+    width: 80%;
   }
 
-  .frame {
-    height: 60vh;
-  } */
+  .parts_comment.pc_01 {
+    top: 50px;
+    left: 0;
+  }
+  
+  .parts_comment.pc_02 {
+    top: 450px;
+    left: 0;
+  }
+  
+  .parts_comment.pc_03 {
+    top: 250px;
+    right: 0;
+  }
+
+  .parts_comment.pl_00 {
+    width: 100vw;
+    top: 50px;
+    left: 0;
+  }
+  
+  .parts_comment.pl_01 {
+    top: 50px;
+    left: 0;
+  }
+  
+  .parts_comment.pl_02 {
+    top: 250px;
+    left: 0;
+  }
+  
+  .parts_comment.pl_03 {
+    top: 450px;
+    left: 0;
+  }
 
 }
 

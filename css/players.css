@@ -89,8 +89,8 @@ iframe {
 .wf-notosansjapanese { font-family: "Noto Sans JP"; }
 
 .youtube {
-  width: 75vw;
-  height: calc(90vw * 0.5625);
+  width: 85vw;
+  height: calc(85vw * 0.5625);
 }
 
 @media screen and (max-width: 768px) {

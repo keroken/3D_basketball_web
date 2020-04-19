@@ -21,7 +21,7 @@ body {
   /* font-family: 'x14y24pxHeadUpDaisy', sans-serif; */
   /* font-family: "Noto Sans JP", sans-serif; */
   font-family: "游ゴシック体", YuGothic, "游ゴシック Medium", "Yu Gothic Medium", "游ゴシック", "Yu Gothic", "メイリオ", sans-serif;
-  background-color: rgba(230, 230, 255, 0.85);
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 h1 {font-size: 26px;}
@@ -31,25 +31,24 @@ h2 {
 }
 h3 {
   font-size: 18px;
-  border-left: solid 8px #005582;
+  border-left: solid 8px #c4feff;
   padding-left: 10px;
 }
 h4 {font-size: 16px;}
 p {font-size: 14px;}
 
 .content {
-  color: #333;
+  color: #fff;
   padding: 30px;
 }
 
 .content_inner {
   width: 80vw;
   margin: 0 auto;
-  
 }
 
 .content h1, h2, h3, h4 {
-  color: 	#005582;
+  color: 	#c4feff;
 }
 
 .content p {
@@ -67,7 +66,7 @@ figcaption {
   font-size: 12px;
   position: absolute;
   bottom: 10px;
-  /* left: 60px; */
+  left: 60px;
   color: #fff;
 }
 
@@ -121,11 +120,6 @@ iframe {
   height: calc(85vw * 0.5625);
 }
 
-.small {
-  text-align: right;
-  margin-right: 30px;
-}
-
 @media screen and (max-width: 768px) {
   h1 {font-size: 26px;}
   h2 {font-size: 20px;}
@@ -156,13 +150,8 @@ iframe {
   }
 
   figcaption {
-    /* left: 35px; */
+    left: 35px;
     font-size: 10px;
-  }
-
-  .small {
-    text-align: center;
-    margin-right: 0;
   }
 }
 

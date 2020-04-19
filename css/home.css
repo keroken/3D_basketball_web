@@ -31,7 +31,9 @@ h4 {font-size: 18px;}
 p {font-size: 16px;}
 
 .content {
-  color: #fff;
+  width: 50%;
+  margin: 0 auto;
+  color:#c4feff;
   text-shadow: 5px 5px 10px #000;
   overflow-y: scroll;
   -ms-overflow-style: none;    /* IE, Edge 対応 */
@@ -48,7 +50,7 @@ p {font-size: 16px;}
 
 .content p {
   /* color: #99e6e8; */
-  line-height: 2.5;
+  line-height: 2;
   font-size: 16px;
   text-shadow: 5px 5px 10px #000;
 }
@@ -57,6 +59,7 @@ p {font-size: 16px;}
 
   .content {
     padding: 0 20px;
+    width: 75%;
   }
   
   .content p {
