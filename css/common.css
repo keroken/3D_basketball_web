@@ -121,9 +121,8 @@ iframe {
   height: calc(85vw * 0.5625);
 }
 
-.small {
-  text-align: right;
-  margin: 0;
+.with-caption {
+  margin-bottom: 5px;
 }
 
 .video-frame video {
