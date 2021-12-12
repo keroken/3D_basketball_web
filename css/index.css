@@ -41,6 +41,8 @@ body {
 
 #title svg {
   fill: #00c2c7;
+  width: 80%;
+  margin-bottom: 30px;
 }
 
 #title h3 {
